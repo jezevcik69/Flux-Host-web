@@ -888,13 +888,13 @@ var GAMES$1 = [
 	},
 	{
 		id: "minecraft",
-		title: "mcBlurb",
+		title: "discordTitle",
 		logo: "/img/grass-block.png",
 		blurb: "mcBlurb"
 	},
 	{
 		id: "hytale",
-		title: "hyBlurb",
+		title: "discordTitle",
 		logo: "/img/hytale-logo.png",
 		blurb: "hyBlurb"
 	}
@@ -2229,7 +2229,7 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/home-enRPmsmE.js",
+			"module": "/assets/home-CArK2iFh.js",
 			"imports": ["/assets/jsx-runtime-C2f9LJXq.js", "/assets/i18n-BrBDrdz7.js"],
 			"css": [],
 			"clientActionModule": void 0,
@@ -2238,8 +2238,8 @@ var server_manifest_default = {
 			"hydrateFallbackModule": void 0
 		}
 	},
-	"url": "/assets/manifest-6eeacf77.js",
-	"version": "6eeacf77",
+	"url": "/assets/manifest-23444131.js",
+	"version": "23444131",
 	"sri": void 0
 };
 //#endregion
