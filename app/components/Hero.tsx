@@ -44,8 +44,7 @@ export function Hero() {
           poster="/img/hero-poster.jpg"
           aria-hidden
         >
-          <source src="/hero.webm" type="video/webm" />
-          <source src="/hero.mp4" type="video/mp4" />
+          <source src="/herooo.mp4" type="video/mp4" />
         </video>
       </motion.div>
       {/* darken for legible copy, strongest in the centre */}

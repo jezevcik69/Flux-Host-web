@@ -1480,7 +1480,7 @@ function Hero() {
 					ease: EASE$1
 				},
 				style: reduce ? void 0 : { scale: bgScale },
-				children: /* @__PURE__ */ jsxs("video", {
+				children: /* @__PURE__ */ jsx("video", {
 					ref: video,
 					className: "size-full object-cover",
 					autoPlay: !reduce,
@@ -1490,13 +1490,10 @@ function Hero() {
 					preload: "auto",
 					poster: "/img/hero-poster.jpg",
 					"aria-hidden": true,
-					children: [/* @__PURE__ */ jsx("source", {
-						src: "/hero.webm",
-						type: "video/webm"
-					}), /* @__PURE__ */ jsx("source", {
-						src: "/hero.mp4",
+					children: /* @__PURE__ */ jsx("source", {
+						src: "/herooo.mp4",
 						type: "video/mp4"
-					})]
+					})
 				})
 			}),
 			/* @__PURE__ */ jsx("div", { className: "pointer-events-none absolute inset-0 bg-black/45" }),
@@ -2286,7 +2283,7 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/home-DemMcf3_.js",
+			"module": "/assets/home-BGFeHAky.js",
 			"imports": ["/assets/jsx-runtime-C2f9LJXq.js", "/assets/i18n-BrBDrdz7.js"],
 			"css": [],
 			"clientActionModule": void 0,
@@ -2295,8 +2292,8 @@ var server_manifest_default = {
 			"hydrateFallbackModule": void 0
 		}
 	},
-	"url": "/assets/manifest-1df0eb89.js",
-	"version": "1df0eb89",
+	"url": "/assets/manifest-cd4fc779.js",
+	"version": "cd4fc779",
 	"sri": void 0
 };
 //#endregion
