@@ -9,6 +9,7 @@ import { Faq } from "../components/Faq";
 import { Contact } from "../components/Contact";
 import { GameSelect } from "../components/GameSelect";
 import { useState } from "react";
+import { scrollToId } from "../components/SmoothScroll";
 import type { CategoryId } from "../components/Pricing";
 
 export function meta({}: Route.MetaArgs) {
@@ -22,7 +23,7 @@ export default function Home() {
   const [cat, setCat] = useState<CategoryId>("discord");
   const pick = (id: CategoryId) => {
     setCat(id);
-    document.getElementById("cenik")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToId("cenik");
   };
   return (
     <>

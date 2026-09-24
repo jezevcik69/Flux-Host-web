@@ -9,6 +9,8 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import { SmoothScroll } from "./components/SmoothScroll";
+import { LangProvider } from "./i18n";
 
 export const links: Route.LinksFunction = () => [
   { rel: "icon", type: "image/png", href: "/img/logo.png" },
@@ -30,7 +32,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="grain font-sans">
-        {children}
+        <LangProvider>
+          <SmoothScroll />
+          {children}
+        </LangProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
