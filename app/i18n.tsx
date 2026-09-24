@@ -10,13 +10,13 @@ const DICT = {
   en: {
     games: "Games", services: "Services", plans: "Plans", faq: "FAQ", contact: "Contact", home: "Home",
     client: "Client area", from: "from", language: "Language",
-    discordBlurb: "Node.js, Python, Rust", mcBlurb: "Paper, Fabric, modpacks", hyBlurb: "Servers from day one",
+    discordBlurb: "Node.js, Python, Rust", mcBlurb: "Paper, Fabric, modpacks", hyBlurb: "Servers from day one", csBlurb: "128 tick, workshop, plugins",
     discordTitle: "Discord bots",
   },
   cs: {
     games: "Hry", services: "Služby", plans: "Ceník", faq: "FAQ", contact: "Kontakt", home: "Domů",
     client: "Klientská zóna", from: "od", language: "Jazyk",
-    discordBlurb: "Node.js, Python, Rust", mcBlurb: "Paper, Fabric, modpacky", hyBlurb: "Servery od prvního dne",
+    discordBlurb: "Node.js, Python, Rust", mcBlurb: "Paper, Fabric, modpacky", hyBlurb: "Servery od prvního dne", csBlurb: "128 tick, workshop, pluginy",
     discordTitle: "Discord boti",
   },
 } as const;

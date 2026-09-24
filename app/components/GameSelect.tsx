@@ -39,6 +39,13 @@ const GAMES: Game[] = [
     logoClass: "w-24 md:w-32",
     tint: "bg-gradient-to-t from-ink via-ink/50 to-ink/10",
   },
+  {
+    id: "cs2",
+    title: "Counter-Strike 2 hosting",
+    body: "128-tick servers, workshop maps and plugins.",
+    logoClass: "",
+    tint: "bg-gradient-to-t from-ink via-ink/40 to-transparent",
+  },
 ];
 
 const EASE = [0.23, 1, 0.32, 1] as const;
@@ -87,7 +94,7 @@ function GameCard({ g, i, onPick }: { g: Game; i: number; onPick: (id: CategoryI
             className="absolute inset-0 size-full object-cover transition-transform duration-[1.2s] ease-[var(--ease-out-strong)] group-hover:scale-[1.08]"
           />
         )}
-        {g.id === "discord" && <DiscordArt logoClass="w-32 md:w-40" />}
+        {(g.id === "discord" || g.id === "cs2") && <DiscordArt theme={g.id} logoClass="w-32 md:w-40" />}
         <div className={`absolute inset-0 ${g.tint}`} />
 
         {g.logo && <motion.img
@@ -101,11 +108,11 @@ function GameCard({ g, i, onPick }: { g: Game; i: number; onPick: (id: CategoryI
         <div className="relative p-8">
           <h3 className="font-medium tracking-[-0.02em] text-3xl leading-tight md:text-4xl">{g.title}</h3>
           <p className="mt-2 max-w-[32ch] text-zinc-300">{g.body}</p>
-          <div className="mt-6 flex items-center justify-between gap-4">
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
             <span className="text-zinc-300">
               from <span className="text-2xl font-medium text-paper">€{from}</span> / month
             </span>
-            <span className="flex items-center gap-2 rounded-full bg-paper px-5 py-3 font-medium text-ink transition-transform duration-150 group-active:scale-[0.97]">
+            <span className="flex items-center gap-2 whitespace-nowrap rounded-full bg-paper px-5 py-3 font-medium text-ink transition-transform duration-150 group-active:scale-[0.97]">
               View plans
               <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
             </span>
@@ -120,7 +127,7 @@ export function GameSelect({ onPick }: { onPick: (id: CategoryId) => void }) {
   return (
     <section id="hry" className="mx-auto max-w-[1400px] px-4 py-24 md:px-8 md:py-32">
       <h2 className="text-4xl font-medium leading-[1.05] tracking-[-0.035em] md:text-6xl">What do you want to host?</h2>
-      <div className="mt-14 grid gap-5 lg:grid-cols-3">
+      <div className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
         {GAMES.map((g, i) => (
           <GameCard key={g.id} g={g} i={i} onPick={onPick} />
         ))}

@@ -18,8 +18,9 @@ const GAMES: { id: CategoryId; title: Key; logo: string; blurb: Key }[] = [
   { id: "discord", title: "discordTitle", logo: "/img/discord.svg", blurb: "discordBlurb" },
   { id: "minecraft", title: "discordTitle", logo: "/img/grass-block.png", blurb: "mcBlurb" },
   { id: "hytale", title: "discordTitle", logo: "/img/hytale-logo.png", blurb: "hyBlurb" },
+  { id: "cs2", title: "discordTitle", logo: "/img/cs2.svg", blurb: "csBlurb" },
 ];
-const GAME_NAMES: Partial<Record<CategoryId, string>> = { minecraft: "Minecraft", hytale: "Hytale" };
+const GAME_NAMES: Partial<Record<CategoryId, string>> = { minecraft: "Minecraft", hytale: "Hytale", cs2: "Counter-Strike 2" };
 const priceFrom = (id: CategoryId) => fmt(Math.min(...allPlans(CATEGORIES.find((c) => c.id === id)!).map((p) => p.month)));
 
 const EASE = [0.23, 1, 0.32, 1] as const;

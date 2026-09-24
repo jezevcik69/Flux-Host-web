@@ -7,7 +7,7 @@ import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 import { AnimatePresence, motion, useMotionTemplate, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
-import { ArrowRight, ArrowUpRight, CaretDown, ChatCircle, Check, ClockCounterClockwise, Cube, DiscordLogo, EnvelopeSimple, House, List, Plus, Question, Robot, ShieldCheck, Stack, Sword, Tag, X } from "@phosphor-icons/react";
+import { ArrowRight, ArrowUpRight, CaretDown, ChatCircle, Check, ClockCounterClockwise, Crosshair, Cube, DiscordLogo, EnvelopeSimple, House, List, Plus, Question, Robot, ShieldCheck, Stack, Sword, Tag, X } from "@phosphor-icons/react";
 //#region \0rolldown/runtime.js
 var __defProp = Object.defineProperty;
 var __exportAll = (all, no_symbols) => {
@@ -116,6 +116,7 @@ var DICT = {
 		discordBlurb: "Node.js, Python, Rust",
 		mcBlurb: "Paper, Fabric, modpacks",
 		hyBlurb: "Servers from day one",
+		csBlurb: "128 tick, workshop, plugins",
 		discordTitle: "Discord bots"
 	},
 	cs: {
@@ -131,6 +132,7 @@ var DICT = {
 		discordBlurb: "Node.js, Python, Rust",
 		mcBlurb: "Paper, Fabric, modpacky",
 		hyBlurb: "Servery od prvního dne",
+		csBlurb: "128 tick, workshop, pluginy",
 		discordTitle: "Discord boti"
 	}
 };
@@ -249,7 +251,24 @@ var ErrorBoundary = UNSAFE_withErrorBoundaryProps(function ErrorBoundary({ error
 //#endregion
 //#region app/components/DiscordArt.tsx
 /** Discord banner art: blurple mesh, floating glowing logo, orbiting rings. */
-function DiscordArt({ logoClass = "w-32 md:w-40", className = "" }) {
+var PALETTES = {
+	discord: {
+		logo: "/img/discord.svg",
+		base: "bg-[#1e1f4b]",
+		a: "bg-[#5865f2]",
+		b: "bg-[#eb459e]",
+		c: "bg-[#00b0f4]"
+	},
+	cs2: {
+		logo: "/img/cs2.svg",
+		base: "bg-[#1a1409]",
+		a: "bg-[#f5a524]",
+		b: "bg-[#de4d1b]",
+		c: "bg-[#4b6a88]"
+	}
+};
+function DiscordArt({ logoClass = "w-32 md:w-40", className = "", theme = "discord" }) {
+	const pal = PALETTES[theme];
 	const reduce = useReducedMotion();
 	const float = reduce ? void 0 : { transform: [
 		"translateY(0px) rotate(-6deg)",
@@ -259,10 +278,10 @@ function DiscordArt({ logoClass = "w-32 md:w-40", className = "" }) {
 	return /* @__PURE__ */ jsxs("div", {
 		className: `absolute inset-0 overflow-hidden ${className}`,
 		children: [
-			/* @__PURE__ */ jsx("div", { className: "absolute inset-0 bg-[#1e1f4b]" }),
-			/* @__PURE__ */ jsx("div", { className: "absolute -left-1/4 -top-1/3 size-[90%] rounded-full bg-[#5865f2] opacity-80 blur-[90px]" }),
-			/* @__PURE__ */ jsx("div", { className: "absolute -bottom-1/3 -right-1/4 size-[80%] rounded-full bg-[#eb459e] opacity-45 blur-[100px]" }),
-			/* @__PURE__ */ jsx("div", { className: "absolute bottom-0 left-1/4 size-[50%] rounded-full bg-[#00b0f4] opacity-30 blur-[90px]" }),
+			/* @__PURE__ */ jsx("div", { className: `absolute inset-0 ${pal.base}` }),
+			/* @__PURE__ */ jsx("div", { className: `absolute -left-1/4 -top-1/3 size-[90%] rounded-full ${pal.a} opacity-80 blur-[90px]` }),
+			/* @__PURE__ */ jsx("div", { className: `absolute -bottom-1/3 -right-1/4 size-[80%] rounded-full ${pal.b} opacity-45 blur-[100px]` }),
+			/* @__PURE__ */ jsx("div", { className: `absolute bottom-0 left-1/4 size-[50%] rounded-full ${pal.c} opacity-30 blur-[90px]` }),
 			/* @__PURE__ */ jsx("div", { className: "grid-bg absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_60%_60%_at_50%_40%,black,transparent_75%)]" }),
 			[
 				1,
@@ -295,12 +314,12 @@ function DiscordArt({ logoClass = "w-32 md:w-40", className = "" }) {
 					ease: "easeInOut"
 				},
 				children: [/* @__PURE__ */ jsx("img", {
-					src: "/img/discord.svg",
+					src: pal.logo,
 					alt: "",
 					"aria-hidden": true,
 					className: `absolute inset-0 opacity-70 blur-2xl ${logoClass}`
 				}), /* @__PURE__ */ jsx("img", {
-					src: "/img/discord.svg",
+					src: pal.logo,
 					alt: "",
 					"aria-hidden": true,
 					className: `relative drop-shadow-[0_18px_30px_rgb(20_10_60/0.6)] transition-transform duration-500 ease-[var(--ease-out-strong)] group-hover:scale-110 ${logoClass}`
@@ -527,6 +546,48 @@ var CATEGORIES = [
 				]
 			}
 		]
+	},
+	{
+		id: "cs2",
+		image: "",
+		tagline: "128-tick servers for scrims, retakes and community nights.",
+		label: "Counter-Strike 2 hosting",
+		icon: Crosshair,
+		plans: [
+			{
+				name: "Scrim",
+				month: 4.99,
+				features: [
+					"3 GB RAM",
+					"20 GB NVMe",
+					"Up to 12 slots",
+					"128 tick"
+				]
+			},
+			{
+				name: "Community",
+				month: 8.99,
+				features: [
+					"6 GB RAM",
+					"40 GB NVMe",
+					"Up to 24 slots",
+					"Workshop maps",
+					"DDoS protection"
+				],
+				featured: true
+			},
+			{
+				name: "Pro League",
+				month: 14.99,
+				features: [
+					"10 GB RAM",
+					"80 GB NVMe",
+					"Up to 32 slots",
+					"Metamod & CounterStrikeSharp",
+					"Priority support"
+				]
+			}
+		]
 	}
 ];
 var allPlans = (c) => c.variants ? c.variants.flatMap((v) => v.plans) : c.plans;
@@ -534,7 +595,8 @@ var fmt = (n) => n.toFixed(2);
 var TAB_LOGO = {
 	discord: "/img/discord.svg",
 	minecraft: "/img/grass-block.png",
-	hytale: "/img/hytale-logo.png"
+	hytale: "/img/hytale-logo.png",
+	cs2: "/img/cs2.svg"
 };
 var EASE$3 = [
 	.23,
@@ -668,26 +730,33 @@ function Pricing({ cat, setCat }) {
 				children: /* @__PURE__ */ jsxs(motion.div, {
 					initial: reduce ? { opacity: 0 } : {
 						opacity: 0,
-						transform: "translateY(16px)",
-						filter: "blur(6px)"
+						y: 12
 					},
-					animate: reduce ? { opacity: 1 } : {
+					animate: {
 						opacity: 1,
-						transform: "translateY(0px)",
-						filter: "blur(0px)"
+						y: 0
 					},
 					exit: reduce ? { opacity: 0 } : {
 						opacity: 0,
-						transform: "translateY(-8px)",
-						filter: "blur(6px)"
+						y: -8,
+						transition: {
+							duration: .18,
+							ease: EASE$3
+						}
 					},
 					transition: {
-						duration: .3,
+						duration: .35,
 						ease: EASE$3
 					},
-					className: "mt-10",
+					className: "mt-10 [perspective:1400px]",
 					children: [
-						/* @__PURE__ */ jsxs("div", {
+						/* @__PURE__ */ jsxs(motion.div, {
+							initial: reduce ? false : { clipPath: "inset(0 100% 0 0 round 16px)" },
+							animate: { clipPath: "inset(0 0% 0 0 round 16px)" },
+							transition: {
+								duration: .8,
+								ease: EASE$3
+							},
 							className: "relative mb-4 h-48 overflow-hidden rounded-2xl ring-1 ring-line md:h-64",
 							children: [
 								category.image ? /* @__PURE__ */ jsx(motion.img, {
@@ -701,6 +770,7 @@ function Pricing({ cat, setCat }) {
 									},
 									className: "size-full object-cover opacity-70"
 								}) : /* @__PURE__ */ jsx(DiscordArt, {
+									theme: cat === "cs2" ? "cs2" : "discord",
 									className: "[&>div:nth-child(n+5)]:left-[78%] [&>div:nth-child(n+5)]:top-1/2",
 									logoClass: "w-24 md:w-32"
 								}),
@@ -812,14 +882,17 @@ function Pricing({ cat, setCat }) {
 									return /* @__PURE__ */ jsxs(motion.div, {
 										initial: reduce ? false : {
 											opacity: 0,
-											y: 28,
-											scale: .97
+											y: 40,
+											rotateX: -18,
+											scale: .96
 										},
 										animate: {
 											opacity: 1,
 											y: 0,
+											rotateX: 0,
 											scale: 1
 										},
+										style: { transformOrigin: "50% 100%" },
 										whileHover: reduce ? void 0 : { y: -6 },
 										transition: {
 											type: "spring",
@@ -954,11 +1027,18 @@ var GAMES$1 = [
 		title: "discordTitle",
 		logo: "/img/hytale-logo.png",
 		blurb: "hyBlurb"
+	},
+	{
+		id: "cs2",
+		title: "discordTitle",
+		logo: "/img/cs2.svg",
+		blurb: "csBlurb"
 	}
 ];
 var GAME_NAMES = {
 	minecraft: "Minecraft",
-	hytale: "Hytale"
+	hytale: "Hytale",
+	cs2: "Counter-Strike 2"
 };
 var priceFrom = (id) => fmt(Math.min(...allPlans(CATEGORIES.find((c) => c.id === id)).map((p) => p.month)));
 var EASE$2 = [
@@ -2053,6 +2133,13 @@ var GAMES = [
 		logo: "/img/hytale-logo.png",
 		logoClass: "w-24 md:w-32",
 		tint: "bg-gradient-to-t from-ink via-ink/50 to-ink/10"
+	},
+	{
+		id: "cs2",
+		title: "Counter-Strike 2 hosting",
+		body: "128-tick servers, workshop maps and plugins.",
+		logoClass: "",
+		tint: "bg-gradient-to-t from-ink via-ink/40 to-transparent"
 	}
 ];
 var EASE = [
@@ -2127,7 +2214,10 @@ function GameCard({ g, i, onPick }) {
 					"aria-hidden": true,
 					className: "absolute inset-0 size-full object-cover transition-transform duration-[1.2s] ease-[var(--ease-out-strong)] group-hover:scale-[1.08]"
 				}),
-				g.id === "discord" && /* @__PURE__ */ jsx(DiscordArt, { logoClass: "w-32 md:w-40" }),
+				(g.id === "discord" || g.id === "cs2") && /* @__PURE__ */ jsx(DiscordArt, {
+					theme: g.id,
+					logoClass: "w-32 md:w-40"
+				}),
 				/* @__PURE__ */ jsx("div", { className: `absolute inset-0 ${g.tint}` }),
 				g.logo && /* @__PURE__ */ jsx(motion.img, {
 					src: g.logo,
@@ -2152,7 +2242,7 @@ function GameCard({ g, i, onPick }) {
 							children: g.body
 						}),
 						/* @__PURE__ */ jsxs("div", {
-							className: "mt-6 flex items-center justify-between gap-4",
+							className: "mt-6 flex flex-wrap items-center justify-between gap-4",
 							children: [/* @__PURE__ */ jsxs("span", {
 								className: "text-zinc-300",
 								children: [
@@ -2164,7 +2254,7 @@ function GameCard({ g, i, onPick }) {
 									" / month"
 								]
 							}), /* @__PURE__ */ jsxs("span", {
-								className: "flex items-center gap-2 rounded-full bg-paper px-5 py-3 font-medium text-ink transition-transform duration-150 group-active:scale-[0.97]",
+								className: "flex items-center gap-2 whitespace-nowrap rounded-full bg-paper px-5 py-3 font-medium text-ink transition-transform duration-150 group-active:scale-[0.97]",
 								children: ["View plans", /* @__PURE__ */ jsx(ArrowRight, {
 									size: 16,
 									className: "transition-transform duration-200 group-hover:translate-x-1"
@@ -2185,7 +2275,7 @@ function GameSelect({ onPick }) {
 			className: "text-4xl font-medium leading-[1.05] tracking-[-0.035em] md:text-6xl",
 			children: "What do you want to host?"
 		}), /* @__PURE__ */ jsx("div", {
-			className: "mt-14 grid gap-5 lg:grid-cols-3",
+			className: "mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-4",
 			children: GAMES.map((g, i) => /* @__PURE__ */ jsx(GameCard, {
 				g,
 				i,
@@ -2258,13 +2348,13 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": true,
-			"module": "/assets/root-BffOGfzt.js",
+			"module": "/assets/root-Cnx8kkla.js",
 			"imports": [
 				"/assets/jsx-runtime-C2f9LJXq.js",
 				"/assets/errorBoundaries-yoNxvpdl.js",
-				"/assets/i18n-BrBDrdz7.js"
+				"/assets/i18n-BMyqqjmf.js"
 			],
-			"css": ["/assets/root-YVgzSFzx.css"],
+			"css": ["/assets/root-DmCWWFyU.css"],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
 			"clientMiddlewareModule": void 0,
@@ -2283,8 +2373,8 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/home-BGFeHAky.js",
-			"imports": ["/assets/jsx-runtime-C2f9LJXq.js", "/assets/i18n-BrBDrdz7.js"],
+			"module": "/assets/home-Ca93C_31.js",
+			"imports": ["/assets/jsx-runtime-C2f9LJXq.js", "/assets/i18n-BMyqqjmf.js"],
 			"css": [],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
@@ -2292,8 +2382,8 @@ var server_manifest_default = {
 			"hydrateFallbackModule": void 0
 		}
 	},
-	"url": "/assets/manifest-cd4fc779.js",
-	"version": "cd4fc779",
+	"url": "/assets/manifest-c8a6ce51.js",
+	"version": "c8a6ce51",
 	"sri": void 0
 };
 //#endregion

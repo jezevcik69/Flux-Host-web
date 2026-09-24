@@ -1,11 +1,11 @@
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
 import { DiscordArt } from "./DiscordArt";
-import { Check, Cube, Robot, Sword, type Icon } from "@phosphor-icons/react";
+import { Check, Crosshair, Cube, Robot, Sword, type Icon } from "@phosphor-icons/react";
 
 type Billing = "month" | "year";
 type Plan = { name: string; month: number; features: string[]; featured?: boolean; icon?: string };
-export type CategoryId = "discord" | "minecraft" | "hytale";
+export type CategoryId = "discord" | "minecraft" | "hytale" | "cs2";
 type Variant = { id: string; label: string; logo: string; plans: Plan[] };
 type Category = { id: CategoryId; label: string; icon: Icon; image: string; tagline: string; plans: Plan[]; variants?: Variant[] };
 
@@ -76,6 +76,18 @@ export const CATEGORIES: Category[] = [
       { name: "Legend", month: 15.99, features: ["12 GB RAM", "100 GB NVMe", "Mod support", "Priority support"] },
     ],
   },
+  {
+    id: "cs2",
+    image: "",
+    tagline: "128-tick servers for scrims, retakes and community nights.",
+    label: "Counter-Strike 2 hosting",
+    icon: Crosshair,
+    plans: [
+      { name: "Scrim", month: 4.99, features: ["3 GB RAM", "20 GB NVMe", "Up to 12 slots", "128 tick"] },
+      { name: "Community", month: 8.99, features: ["6 GB RAM", "40 GB NVMe", "Up to 24 slots", "Workshop maps", "DDoS protection"], featured: true },
+      { name: "Pro League", month: 14.99, features: ["10 GB RAM", "80 GB NVMe", "Up to 32 slots", "Metamod & CounterStrikeSharp", "Priority support"] },
+    ],
+  },
 ];
 
 export const allPlans = (c: Category) => (c.variants ? c.variants.flatMap((v) => v.plans) : c.plans);
@@ -85,6 +97,7 @@ const TAB_LOGO: Record<CategoryId, string> = {
   discord: "/img/discord.svg",
   minecraft: "/img/grass-block.png",
   hytale: "/img/hytale-logo.png",
+  cs2: "/img/cs2.svg",
 };
 
 const EASE = [0.23, 1, 0.32, 1] as const;
@@ -191,13 +204,18 @@ export function Pricing({ cat, setCat }: { cat: CategoryId; setCat: (c: Category
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={cat}
-          initial={reduce ? { opacity: 0 } : { opacity: 0, transform: "translateY(16px)", filter: "blur(6px)" }}
-          animate={reduce ? { opacity: 1 } : { opacity: 1, transform: "translateY(0px)", filter: "blur(0px)" }}
-          exit={reduce ? { opacity: 0 } : { opacity: 0, transform: "translateY(-8px)", filter: "blur(6px)" }}
-          transition={{ duration: 0.3, ease: EASE }}
-          className="mt-10"
+          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={reduce ? { opacity: 0 } : { opacity: 0, y: -8, transition: { duration: 0.18, ease: EASE } }}
+          transition={{ duration: 0.35, ease: EASE }}
+          className="mt-10 [perspective:1400px]"
         >
-          <div className="relative mb-4 h-48 overflow-hidden rounded-2xl ring-1 ring-line md:h-64">
+          <motion.div
+            initial={reduce ? false : { clipPath: "inset(0 100% 0 0 round 16px)" }}
+            animate={{ clipPath: "inset(0 0% 0 0 round 16px)" }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="relative mb-4 h-48 overflow-hidden rounded-2xl ring-1 ring-line md:h-64"
+          >
             {category.image ? (
             <motion.img
               src={category.image}
@@ -208,7 +226,7 @@ export function Pricing({ cat, setCat }: { cat: CategoryId; setCat: (c: Category
               className="size-full object-cover opacity-70"
             />
             ) : (
-              <DiscordArt className="[&>div:nth-child(n+5)]:left-[78%] [&>div:nth-child(n+5)]:top-1/2" logoClass="w-24 md:w-32" />
+              <DiscordArt theme={cat === "cs2" ? "cs2" : "discord"} className="[&>div:nth-child(n+5)]:left-[78%] [&>div:nth-child(n+5)]:top-1/2" logoClass="w-24 md:w-32" />
             )}
             <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-transparent" />
             <motion.div
@@ -220,7 +238,7 @@ export function Pricing({ cat, setCat }: { cat: CategoryId; setCat: (c: Category
               <h3 className="font-medium tracking-[-0.02em] text-4xl md:text-5xl">{category.label}</h3>
               <p className="mt-2 max-w-[40ch] text-zinc-300">{category.tagline}</p>
             </motion.div>
-          </div>
+          </motion.div>
           {category.variants && (
             <div role="tablist" aria-label="Bot language" className="mb-4 grid gap-3 sm:grid-cols-3">
               {category.variants.map((v) => {
@@ -271,8 +289,9 @@ export function Pricing({ cat, setCat }: { cat: CategoryId; setCat: (c: Category
             return (
               <motion.div
                 key={p.name}
-                initial={reduce ? false : { opacity: 0, y: 28, scale: 0.97 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
+                initial={reduce ? false : { opacity: 0, y: 40, rotateX: -18, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
+                style={{ transformOrigin: "50% 100%" }}
                 whileHover={reduce ? undefined : { y: -6 }}
                 transition={{ type: "spring", stiffness: 260, damping: 24, delay: reduce ? 0 : i * 0.07 }}
                 onPointerMove={(e) => {
