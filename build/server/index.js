@@ -705,7 +705,21 @@ function Pricing({ cat, setCat }) {
 									logoClass: "w-24 md:w-32"
 								}),
 								/* @__PURE__ */ jsx("div", { className: "absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-transparent" }),
-								/* @__PURE__ */ jsxs("div", {
+								/* @__PURE__ */ jsxs(motion.div, {
+									initial: reduce ? false : {
+										opacity: 0,
+										x: -24
+									},
+									animate: {
+										opacity: 1,
+										x: 0
+									},
+									transition: {
+										type: "spring",
+										stiffness: 220,
+										damping: 26,
+										delay: .1
+									},
 									className: "absolute inset-0 flex flex-col justify-end p-8 md:p-10",
 									children: [/* @__PURE__ */ jsx("h3", {
 										className: "font-medium tracking-[-0.02em] text-4xl md:text-5xl",
@@ -723,11 +737,18 @@ function Pricing({ cat, setCat }) {
 							className: "mb-4 grid gap-3 sm:grid-cols-3",
 							children: category.variants.map((v) => {
 								const active = v.id === variant?.id;
-								return /* @__PURE__ */ jsxs("button", {
+								return /* @__PURE__ */ jsxs(motion.button, {
 									role: "tab",
 									"aria-selected": active,
 									onClick: () => setVariantId(v.id),
-									className: `relative flex items-center gap-4 rounded-2xl p-5 text-left ring-1 transition-colors duration-200 ${active ? "text-ink ring-paper" : "bg-ink-2 text-paper ring-line hover:ring-white/30"}`,
+									whileHover: reduce ? void 0 : { y: -3 },
+									whileTap: reduce ? void 0 : { scale: .98 },
+									transition: {
+										type: "spring",
+										stiffness: 400,
+										damping: 26
+									},
+									className: `group relative flex items-center gap-4 rounded-2xl p-5 text-left ring-1 transition-colors duration-200 ${active ? "text-ink ring-paper" : "bg-ink-2 text-paper ring-line hover:ring-white/30"}`,
 									children: [
 										active && /* @__PURE__ */ jsx(motion.span, {
 											layoutId: "variant-pill",
@@ -738,13 +759,33 @@ function Pricing({ cat, setCat }) {
 												bounce: .15
 											}
 										}),
-										/* @__PURE__ */ jsx("span", {
-											className: `relative grid size-11 place-items-center rounded-xl ${active ? "bg-ink" : "bg-ink-3"}`,
+										/* @__PURE__ */ jsx(motion.span, {
+											animate: active && !reduce ? {
+												rotate: [
+													0,
+													-10,
+													6,
+													0
+												],
+												scale: [
+													1,
+													1.15,
+													1
+												]
+											} : {
+												rotate: 0,
+												scale: 1
+											},
+											transition: {
+												duration: .5,
+												ease: EASE$3
+											},
+											className: `relative grid size-11 place-items-center rounded-xl transition-colors duration-300 ${active ? "bg-ink" : "bg-ink-3"}`,
 											children: /* @__PURE__ */ jsx("img", {
 												src: v.logo,
 												alt: "",
 												"aria-hidden": true,
-												className: "size-6"
+												className: "size-6 transition-transform duration-300 ease-[var(--ease-out-strong)] group-hover:scale-110"
 											})
 										}),
 										/* @__PURE__ */ jsx("span", {
@@ -759,21 +800,11 @@ function Pricing({ cat, setCat }) {
 							mode: "wait",
 							initial: false,
 							children: /* @__PURE__ */ jsx(motion.div, {
-								initial: reduce ? { opacity: 0 } : {
+								initial: { opacity: 1 },
+								animate: { opacity: 1 },
+								exit: {
 									opacity: 0,
-									filter: "blur(6px)"
-								},
-								animate: reduce ? { opacity: 1 } : {
-									opacity: 1,
-									filter: "blur(0px)"
-								},
-								exit: reduce ? { opacity: 0 } : {
-									opacity: 0,
-									filter: "blur(6px)"
-								},
-								transition: {
-									duration: .2,
-									ease: EASE$3
+									transition: { duration: .15 }
 								},
 								className: `grid gap-4 md:grid-cols-2 ${cols}`,
 								children: plans.map((p, i) => {
@@ -781,19 +812,32 @@ function Pricing({ cat, setCat }) {
 									return /* @__PURE__ */ jsxs(motion.div, {
 										initial: reduce ? false : {
 											opacity: 0,
-											transform: "translateY(20px)"
+											y: 28,
+											scale: .97
 										},
 										animate: {
 											opacity: 1,
-											transform: "translateY(0px)"
+											y: 0,
+											scale: 1
 										},
+										whileHover: reduce ? void 0 : { y: -6 },
 										transition: {
-											duration: .5,
-											delay: reduce ? 0 : .05 + i * .06,
-											ease: EASE$3
+											type: "spring",
+											stiffness: 260,
+											damping: 24,
+											delay: reduce ? 0 : i * .07
 										},
-										className: `flex flex-col rounded-2xl p-8 ring-1 ${p.featured ? "bg-paper text-ink ring-paper" : "bg-ink-2 ring-line"}`,
+										onPointerMove: (e) => {
+											const r = e.currentTarget.getBoundingClientRect();
+											e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
+											e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
+										},
+										className: `group relative flex flex-col overflow-hidden rounded-2xl p-8 ring-1 transition-shadow duration-300 hover:shadow-[0_30px_60px_-30px_rgb(47_123_255/0.45)] ${p.featured ? "bg-paper text-ink ring-paper" : "bg-ink-2 ring-line hover:ring-white/25"}`,
 										children: [
+											/* @__PURE__ */ jsx("span", {
+												"aria-hidden": true,
+												className: `pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${p.featured ? "bg-[radial-gradient(320px_circle_at_var(--mx)_var(--my),rgb(47_123_255/0.12),transparent_70%)]" : "bg-[radial-gradient(320px_circle_at_var(--mx)_var(--my),rgb(255_255_255/0.08),transparent_70%)]"}`
+											}),
 											/* @__PURE__ */ jsxs("div", {
 												className: "flex items-center gap-4",
 												children: [p.icon && /* @__PURE__ */ jsx("span", {
@@ -821,7 +865,20 @@ function Pricing({ cat, setCat }) {
 											}),
 											/* @__PURE__ */ jsx("ul", {
 												className: "mt-8 flex flex-1 flex-col gap-3",
-												children: p.features.map((f) => /* @__PURE__ */ jsxs("li", {
+												children: p.features.map((f, j) => /* @__PURE__ */ jsxs(motion.li, {
+													initial: reduce ? false : {
+														opacity: 0,
+														x: -8
+													},
+													animate: {
+														opacity: 1,
+														x: 0
+													},
+													transition: {
+														duration: .35,
+														delay: reduce ? 0 : .15 + i * .07 + j * .04,
+														ease: EASE$3
+													},
 													className: "flex items-center gap-3",
 													children: [/* @__PURE__ */ jsx(Check, {
 														size: 16,
@@ -910,7 +967,7 @@ var EASE$2 = [
 	.32,
 	1
 ];
-var MENU_BG = "/games-bg.mp4";
+var MENU_BG = "/herooo.mp4";
 function useScrollSpy() {
 	const [active, setActive] = useState("top");
 	useEffect(() => {
@@ -2204,13 +2261,13 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": true,
-			"module": "/assets/root-DWO4YUVw.js",
+			"module": "/assets/root-BffOGfzt.js",
 			"imports": [
 				"/assets/jsx-runtime-C2f9LJXq.js",
 				"/assets/errorBoundaries-yoNxvpdl.js",
 				"/assets/i18n-BrBDrdz7.js"
 			],
-			"css": ["/assets/root-FSFtMhby.css"],
+			"css": ["/assets/root-YVgzSFzx.css"],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
 			"clientMiddlewareModule": void 0,
@@ -2229,7 +2286,7 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/home-CArK2iFh.js",
+			"module": "/assets/home-DemMcf3_.js",
 			"imports": ["/assets/jsx-runtime-C2f9LJXq.js", "/assets/i18n-BrBDrdz7.js"],
 			"css": [],
 			"clientActionModule": void 0,
@@ -2238,8 +2295,8 @@ var server_manifest_default = {
 			"hydrateFallbackModule": void 0
 		}
 	},
-	"url": "/assets/manifest-23444131.js",
-	"version": "23444131",
+	"url": "/assets/manifest-1df0eb89.js",
+	"version": "1df0eb89",
 	"sri": void 0
 };
 //#endregion

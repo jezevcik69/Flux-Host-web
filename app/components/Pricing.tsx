@@ -211,22 +211,30 @@ export function Pricing({ cat, setCat }: { cat: CategoryId; setCat: (c: Category
               <DiscordArt className="[&>div:nth-child(n+5)]:left-[78%] [&>div:nth-child(n+5)]:top-1/2" logoClass="w-24 md:w-32" />
             )}
             <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-transparent" />
-            <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-10">
+            <motion.div
+              initial={reduce ? false : { opacity: 0, x: -24 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ type: "spring", stiffness: 220, damping: 26, delay: 0.1 }}
+              className="absolute inset-0 flex flex-col justify-end p-8 md:p-10"
+            >
               <h3 className="font-medium tracking-[-0.02em] text-4xl md:text-5xl">{category.label}</h3>
               <p className="mt-2 max-w-[40ch] text-zinc-300">{category.tagline}</p>
-            </div>
+            </motion.div>
           </div>
           {category.variants && (
             <div role="tablist" aria-label="Bot language" className="mb-4 grid gap-3 sm:grid-cols-3">
               {category.variants.map((v) => {
                 const active = v.id === variant?.id;
                 return (
-                  <button
+                  <motion.button
                     key={v.id}
                     role="tab"
                     aria-selected={active}
                     onClick={() => setVariantId(v.id)}
-                    className={`relative flex items-center gap-4 rounded-2xl p-5 text-left ring-1 transition-colors duration-200 ${
+                    whileHover={reduce ? undefined : { y: -3 }}
+                    whileTap={reduce ? undefined : { scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 26 }}
+                    className={`group relative flex items-center gap-4 rounded-2xl p-5 text-left ring-1 transition-colors duration-200 ${
                       active ? "text-ink ring-paper" : "bg-ink-2 text-paper ring-line hover:ring-white/30"
                     }`}
                   >
@@ -237,11 +245,15 @@ export function Pricing({ cat, setCat }: { cat: CategoryId; setCat: (c: Category
                         transition={{ type: "spring", duration: 0.45, bounce: 0.15 }}
                       />
                     )}
-                    <span className={`relative grid size-11 place-items-center rounded-xl ${active ? "bg-ink" : "bg-ink-3"}`}>
-                      <img src={v.logo} alt="" aria-hidden className="size-6" />
-                    </span>
+                    <motion.span
+                      animate={active && !reduce ? { rotate: [0, -10, 6, 0], scale: [1, 1.15, 1] } : { rotate: 0, scale: 1 }}
+                      transition={{ duration: 0.5, ease: EASE }}
+                      className={`relative grid size-11 place-items-center rounded-xl transition-colors duration-300 ${active ? "bg-ink" : "bg-ink-3"}`}
+                    >
+                      <img src={v.logo} alt="" aria-hidden className="size-6 transition-transform duration-300 ease-[var(--ease-out-strong)] group-hover:scale-110" />
+                    </motion.span>
                     <span className="relative font-medium">{v.label}</span>
-                  </button>
+                  </motion.button>
                 );
               })}
             </div>
@@ -249,10 +261,9 @@ export function Pricing({ cat, setCat }: { cat: CategoryId; setCat: (c: Category
           <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={variant?.id ?? "plans"}
-            initial={reduce ? { opacity: 0 } : { opacity: 0, filter: "blur(6px)" }}
-            animate={reduce ? { opacity: 1 } : { opacity: 1, filter: "blur(0px)" }}
-            exit={reduce ? { opacity: 0 } : { opacity: 0, filter: "blur(6px)" }}
-            transition={{ duration: 0.2, ease: EASE }}
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.15 } }}
             className={`grid gap-4 md:grid-cols-2 ${cols}`}
           >
           {plans.map((p, i) => {
@@ -260,13 +271,27 @@ export function Pricing({ cat, setCat }: { cat: CategoryId; setCat: (c: Category
             return (
               <motion.div
                 key={p.name}
-                initial={reduce ? false : { opacity: 0, transform: "translateY(20px)" }}
-                animate={{ opacity: 1, transform: "translateY(0px)" }}
-                transition={{ duration: 0.5, delay: reduce ? 0 : 0.05 + i * 0.06, ease: EASE }}
-                className={`flex flex-col rounded-2xl p-8 ring-1 ${
-                  p.featured ? "bg-paper text-ink ring-paper" : "bg-ink-2 ring-line"
+                initial={reduce ? false : { opacity: 0, y: 28, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                whileHover={reduce ? undefined : { y: -6 }}
+                transition={{ type: "spring", stiffness: 260, damping: 24, delay: reduce ? 0 : i * 0.07 }}
+                onPointerMove={(e) => {
+                  const r = e.currentTarget.getBoundingClientRect();
+                  e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
+                  e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
+                }}
+                className={`group relative flex flex-col overflow-hidden rounded-2xl p-8 ring-1 transition-shadow duration-300 hover:shadow-[0_30px_60px_-30px_rgb(47_123_255/0.45)] ${
+                  p.featured ? "bg-paper text-ink ring-paper" : "bg-ink-2 ring-line hover:ring-white/25"
                 }`}
               >
+                <span
+                  aria-hidden
+                  className={`pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${
+                    p.featured
+                      ? "bg-[radial-gradient(320px_circle_at_var(--mx)_var(--my),rgb(47_123_255/0.12),transparent_70%)]"
+                      : "bg-[radial-gradient(320px_circle_at_var(--mx)_var(--my),rgb(255_255_255/0.08),transparent_70%)]"
+                  }`}
+                />
                 <div className="flex items-center gap-4">
                   {p.icon && (
                     <span className={`grid size-12 place-items-center rounded-lg ${p.featured ? "bg-ink/10" : "bg-ink-3"}`}>
@@ -282,11 +307,17 @@ export function Pricing({ cat, setCat }: { cat: CategoryId; setCat: (c: Category
                   <span className={p.featured ? "text-ink/60" : "text-mute"}>/ month</span>
                 </p>
                 <ul className="mt-8 flex flex-1 flex-col gap-3">
-                  {p.features.map((f) => (
-                    <li key={f} className="flex items-center gap-3">
+                  {p.features.map((f, j) => (
+                    <motion.li
+                      key={f}
+                      initial={reduce ? false : { opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.35, delay: reduce ? 0 : 0.15 + i * 0.07 + j * 0.04, ease: EASE }}
+                      className="flex items-center gap-3"
+                    >
                       <Check size={16} weight="bold" className={p.featured ? "text-ink" : "text-paper"} />
                       <span className={p.featured ? "text-ink/80" : "text-mute"}>{f}</span>
-                    </li>
+                    </motion.li>
                   ))}
                 </ul>
                 <a

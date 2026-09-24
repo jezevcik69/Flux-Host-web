@@ -23,7 +23,7 @@ const GAME_NAMES: Partial<Record<CategoryId, string>> = { minecraft: "Minecraft"
 const priceFrom = (id: CategoryId) => fmt(Math.min(...allPlans(CATEGORIES.find((c) => c.id === id)!).map((p) => p.month)));
 
 const EASE = [0.23, 1, 0.32, 1] as const;
-const MENU_BG = "/games-bg.mp4";
+const MENU_BG = "/herooo.mp4";
 
 function useScrollSpy() {
   const [active, setActive] = useState<string>("top");
